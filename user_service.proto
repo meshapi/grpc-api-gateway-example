@@ -32,10 +32,10 @@ message DeleteUserResponse {}
 
 service UserService {
   rpc AddUser(AddUserRequest) returns (AddUserResponse) {
-	  option (meshapi.gateway.http) = {
-			post: "/users",
+    option (meshapi.gateway.http) = {
+      post: "/users",
       body: "*"
-		};
+    };
   };
   rpc DeleteUser(DeleteUserRequest) returns (DeleteUserResponse) {
     option (meshapi.gateway.http) = {
