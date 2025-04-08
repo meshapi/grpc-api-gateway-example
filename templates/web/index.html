@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>gRPC Gateway Chat Demo</title>
+	<style>
+		body,
+		html {
+			height: 100%;
+			margin: 0;
+			font-family: Arial, sans-serif;
+		}
+
+		.chat-panel {
+			padding: 5px;
+			background-color: whitesmoke;
+			margin: 5px;
+			min-width: 200px;
+			min-height: 300px;
+		}
+
+		.message-panel {
+			padding: 5px;
+			background-color: whitesmoke;
+			margin: 5px;
+			min-width: 200px;
+			min-height: 100px;
+		}
+	</style>
+</head>
+
+<body>
+	<div>
+		<p>Chat</p>
+		<div id="chat-panel" class="chat-panel"></div>
+		<div class="message-panel">
+			<form onsubmit="event.preventDefault(); send(event);">
+				<input type="text" id="name-input" placeholder="You Name" required />
+				<input type="text" id="message-input" placeholder="Message" required />
+				<input type="submit" />
+			</form>
+		</div>
+	</div>
+
+	<script>
+		const socket = new WebSocket("ws://localhost:4000/chat");
+		function addText(name, text) {
+			const panel = document.getElementById("chat-panel");
+			const newElement = `<div><strong>${name}: </strong>${text}</div>`;
+			panel.innerHTML = panel.innerHTML + newElement;
+		}
+		socket.addEventListener("message", (event) => {
+			const data = JSON.parse(event.data);
+			addText(data.user, data.text);
+		});
+		function send() {
+			const name = document.getElementById("name-input").value;
+			const message = document.getElementById("message-input").value;
+			socket.send(JSON.stringify({name: name, text: message}));
+			document.getElementById("message-input").value = "";
+			addText(name, message);
+		}
+	</script>
+</body>
+
+</html>

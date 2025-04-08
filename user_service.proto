@@ -1,0 +1,50 @@
+syntax = "proto3";
+
+package main;
+
+import "meshapi/gateway/annotations.proto";
+
+option go_package = "github.com/meshapi/grpc-api-gateway-examples;gen";
+
+message AddUserRequest {
+  string name = 1;
+}
+
+message AddUserResponse {
+  string id = 1;
+}
+
+message DeleteUserRequest {
+  string id = 1;
+}
+
+message UserStreamRequest {
+  bool include_deletions = 1;
+}
+
+message UserStreamResponse {
+  string id = 1;
+  string name = 2;
+  bool deleted = 3;
+}
+
+message DeleteUserResponse {}
+
+service UserService {
+  rpc AddUser(AddUserRequest) returns (AddUserResponse) {
+	  option (meshapi.gateway.http) = {
+			post: "/users",
+      body: "*"
+		};
+  };
+  rpc DeleteUser(DeleteUserRequest) returns (DeleteUserResponse) {
+    option (meshapi.gateway.http) = {
+      delete: "/users/{id}"
+    };
+  };
+  rpc UserStream(UserStreamRequest) returns (stream UserStreamResponse) {
+    option (meshapi.gateway.http) = {
+      get: "/users-stream"
+    };
+  };
+}

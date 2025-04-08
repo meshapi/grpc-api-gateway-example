@@ -1,0 +1,13 @@
+gateway:
+  endpoints:
+    - selector: "~.ChatService.Chat"
+      get: "/chat"
+      stream:
+        disable_sse: true
+
+openapi:
+  services:
+    - selector: "~.ChatService"
+      methods:
+        Chat:
+          description: "This is a websocket and you need to upgrade!"

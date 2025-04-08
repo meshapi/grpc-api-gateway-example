@@ -1,0 +1,6 @@
+version: v1
+deps:
+  - "buf.build/meshapi/grpc-api-gateway"
+build:
+  excludes:
+    - proto-vendor
