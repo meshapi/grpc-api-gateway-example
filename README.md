@@ -1,4 +1,3 @@
-{{REWRITTEN_CODE}}
 # grpc-api-gateway-example
 
 This repository provides examples demonstrating the capabilities of the gRPC API Gateway project.
